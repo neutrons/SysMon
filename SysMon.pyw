@@ -86,7 +86,7 @@ class SysMon(QtGui.QMainWindow):
 
         QtCore.QObject.connect(self.ui.pushButtonUpdate, QtCore.SIGNAL('clicked(bool)'), self.updateProcesses)
 
-
+        QtCore.QObject.connect(self.ui.pushButtonResetBarPlot, QtCore.SIGNAL('clicked(bool)'), self.resetBar)
         
         #Initialize System Tab
         self.ui.tabWidget.setCurrentIndex(0)
@@ -96,7 +96,7 @@ class SysMon(QtGui.QMainWindow):
             oslabel="Windows "+info[0]+"  Version: "+info[1]
         elif platform.os.name == 'posix':
             info=platform.linux_distribution()
-            oslabel="Linux  "+info[0]+"  Version: "+info[1]
+            oslabel=info[0]+" Version: "+info[1]
         elif platform.os.name == 'mac':
             info=platform.mac_ver()
             oslabel=info[0]+"  Version: "+info[1]
@@ -114,7 +114,7 @@ class SysMon(QtGui.QMainWindow):
             lst.append(item.name)
         uusers=set(lst)
         Nuusers=len(uusers)
-        self.ui.labelNUsers.setText("Number of Users: "+str(Nuusers))
+        self.ui.labelNUsers.setText("Number of Users Logged On: "+str(Nuusers))
         
         #determine the computer uptime
         if psutilVer == 1:
@@ -122,35 +122,24 @@ class SysMon(QtGui.QMainWindow):
         else:
             uptime = str(datetime.datetime.now() - datetime.datetime.fromtimestamp(psutil.boot_time()))
         self.ui.labelUptime.setText("System Uptime: "+uptime)
-
         
         #Initialize History Tab
-        #Initialize System Tab
         self.ui.tabWidget.setCurrentIndex(1)
         #Place Matplotlib figure within the GUI frame
         #create drawing canvas
         # a figure instance to plot on
         
-        matplotlib.rc_context({'toolbar':True})
-        self.ui.shadowFigure = plt.figure()
-        plt.figure(self.ui.shadowFigure.number)
-        self.ui.figure = plt.figure()
+        matplotlib.rc_context({'toolbar':False})
+        self.ui.figure = plt.figure(1)
         self.ui.canvas = FigureCanvas(self.ui.figure)
         self.ui.figure.set_size_inches(2,2) #tighten up the plot (not sure this is necessary)
         
         # this is the Canvas Widget that displays the `figure`
         # it takes the `figure` instance as a parameter to __init__
-        self.ui.shadowCanvas=FigureCanvas(self.ui.shadowFigure)
-        self.ui.shadowCanvas.set_window_title('Popout Figure')
         self.ui.canvas = FigureCanvas(self.ui.figure)
-        
-        #add Navigation Toolbar
-        self.ui.navigation_toolbar = NavigationToolbar(self.ui.canvas, self)
-        self.ui.shadow_navigation_toolbar = NavigationToolbar(self.ui.shadowCanvas, self.ui.shadowCanvas)
         
         layout=QtGui.QVBoxLayout(self.ui.framePlot)
         layout.addWidget(self.ui.canvas)
-        layout.addWidget(self.ui.navigation_toolbar, 0)
         self.ui.layout=layout
 
         #initialize history plot arrays
@@ -164,6 +153,9 @@ class SysMon(QtGui.QMainWindow):
         #initialize the process table
         self.doUpdates=True #flag for updating the process tab table
         updateProcTable(self)        
+        
+        #initialize the figure and canvas for the User's tab bar plot 
+        resetBarPlot(self)
         
         #upon initialization completion, set System tab (first tab on left) as the visible tab
         self.ui.tabWidget.setCurrentIndex(0)
@@ -254,7 +246,7 @@ class SysMon(QtGui.QMainWindow):
     def About(self):
         dialog=QtGui.QMessageBox(self)
         dialog.setText("PyQt4 System Monitoring Application V0.01")
-        info='Application Info: \n\r * Changing the Update Rate Clears plots \n\r * It may take one full new update cycle for changes to take effect \n\r * Update rate shown in History plot xaxis label \n\r * Updating processes may take several seconds \n\r * CPU percentage can be greater than 100 when more than a single core is involved'
+        info='Application Info: \n\r * Changing the Update Rate Clears plots \n\r * It may take one full new update cycle for changes to take effect \n\r * Update rate shown in History plot xaxis label \n\r * Updating processes may take several seconds \n\r * CPU percentage can be greater than 100 when more than a single core is involved \n\r * Reset Plot button on Users tab to recover from occasional bar chart plotting dropouts'
         dialog.setDetailedText(info) #give full info in detailed text
         dialog.exec_()
 
@@ -276,7 +268,10 @@ class SysMon(QtGui.QMainWindow):
         self.ui.tableWidgetProcess.setColumnWidth(2,3*w/20)
         self.ui.tableWidgetProcess.setColumnWidth(3,3*w/20)
         self.ui.tableWidgetProcess.setColumnWidth(4,6*w/20)
-        
+    
+    def resetBar(self):
+        #placeholder to call global method
+        resetBarPlot(self)
                                
 def constantUpdateActor(self):
 
@@ -284,17 +279,19 @@ def constantUpdateActor(self):
     Ndur=self.duration
 
     #mode to show status in percentage
-    cpu_stats = psutil.cpu_times_percent(interval=1,percpu=False) #syntax seems to be same for psutil versions 1 and 2
+    cpu_stats = psutil.cpu_times_percent(interval=0,percpu=False) #syntax seems to be same for psutil versions 1 and 2
     percentcpubusy = 100.0 - cpu_stats.idle
-    self.ui.progressBarStatusCPU.setValue(percentcpubusy)
+    self.ui.progressBarStatusCPU.setValue(round(percentcpubusy))
     percentmembusy=psutil.virtual_memory().percent
     self.ui.progressBarStatusMemory.setValue(percentmembusy)
     Ncpus=len(psutil.cpu_percent(percpu=True))
+    self.ui.Ncpus=Ncpus
     totalcpustr='CPU Count: '+str(Ncpus)
 #        print "Total CPU str: ",totalcpustr
     self.ui.labelCPUCount.setText(totalcpustr)
     totalmem=int(round(float(psutil.virtual_memory().total)/(1024*1024*1024))) #psutil syntax OK for both versions
 #        print "Total Mem: ",totalmem
+    self.ui.totalmem=totalmem
     totalmemstr='Max Mem: '+str(totalmem)+' GB'
 #        print "Total Mem str: ",totalmemstr
     self.ui.labelMaxMem.setText(totalmemstr)
@@ -306,9 +303,6 @@ def constantUpdateActor(self):
         uptime = str(datetime.datetime.now() - datetime.datetime.fromtimestamp(psutil.boot_time()))
     self.ui.labelUptime.setText("System Uptime: "+uptime)
 
-    
-#now update plots
-
     #update first position with most recent value overwriting oldest value which has been shifted to first position
     self.ui.cpu=np.roll(self.ui.cpu,1)
     self.ui.cpu[0]=percentcpubusy
@@ -317,60 +311,67 @@ def constantUpdateActor(self):
     self.ui.dt=np.roll(self.ui.dt,1)
     self.ui.dt[0]=datetime.datetime.now()
     
-    font = {'family' : 'sans-serif',
-        'weight' : 'bold',
-        'size'   : 7}
+    #update the history plot
+    if self.ui.tabWidget.currentIndex() == 1:
+        #only update history plot if tab is active    
+        font = {'family' : 'sans-serif',
+            'weight' : 'bold',
+            'size'   : 9}
 
-    matplotlib.rc('font', **font)
-    
-    xtime=range(0,self.ui.Nsamples+1,self.update)
-    
+        matplotlib.rc('font', **font)
+        
+        xtime=range(0,self.ui.Nsamples+1,self.update)
+        
 
-    Npts=Ndur/self.update
-    """
-    print "Ndur: ",Ndur
-    print "Update: ",self.update
-    print "Npts: ",Npts
-    print xtime[0:Npts-1]
-    """
-    ax=plt.gca()
-    plt.clf #clear old plot
-    plt.plot(xtime[0:Npts+1],self.ui.cpu[0:Npts+1],color='Blue',label='CPU Busy')
-    plt.hold(True)
-    plt.plot(xtime[0:Npts+1],self.ui.mem[0:Npts+1],color='Green',label='Mem Busy')
-    plt.gcf().autofmt_xdate()
-    plt.title('CPU and Memory Activity',fontsize=10,fontweight='bold')
-    plt.ylabel('% Busy',fontsize=9.5,fontweight='bold')
+        Npts=Ndur/self.update
+        self.ui.canvas
+        plt.figure(self.ui.figure.number)
+        ax=plt.gca()
+        plt.clf #clear old plot
+        plt.plot(xtime[0:Npts+1],self.ui.cpu[0:Npts+1],color='Blue',label='CPU Busy')
+        plt.hold(True)
+        plt.plot(xtime[0:Npts+1],self.ui.mem[0:Npts+1],color='Green',label='Mem Busy')
+        plt.gcf().autofmt_xdate()
+#        plt.title('Composite CPU and Memory Activity',fontsize=10,fontweight='bold')
+        plt.ylabel('% Busy',fontsize=9.5,fontweight='bold')
+        
+        if self.update == 1:
+            xlab="Seconds with 1 Second Updates"
+        elif self.update == 2:
+            xlab="Seconds with 2 Second Updates"
+        elif self.update == 5:
+            xlab="Seconds with 5 Second Updates"    
+        elif self.update == 10:
+            xlab="Seconds with 10 Second Updates"
+        
+        plt.xlabel(xlab,fontsize=9.5,fontweight='bold')
+        plt.legend(loc="upper right",prop={'size':7})
+        ax.xaxis.set_label_coords(0.5,-0.175)
+        ax.yaxis.set_label_coords(-0.07,.5)
+        ax.set_title('Composite CPU and Memory Activity',x=0.5,y=1,fontsize=10,fontweight='bold')
+        plt.xlim([0,Ndur])
+        plt.hold(False)
+        self.ui.canvas.draw()
+        
+        #update the number of users each time interval as well
+        userInfo=psutil.get_users() if psutilVer == 1 else psutil.users()
+        lst=[]
+        for item in userInfo:
+            lst.append(item.name)
+        uusers=set(lst)
+        Nuusers=len(uusers)
+        self.ui.labelNUsers.setText("Number of Users Logged On: "+str(Nuusers))
     
-    if self.update == 1:
-        xlab="Seconds with 1 Second Updates"
-    elif self.update ==2:
-        xlab="Seconds with 2 Second Updates"
-    elif self.update ==5:
-        xlab="Seconds with 5 Second Updates"    
-    elif self.update ==10:
-        xlab="Seconds with 10 Second Updates"
+    #update the process table
+    if self.ui.tabWidget.currentIndex() == 2:
+        #only update process table if tab is active
+        updateProcTable(self)
     
-    plt.xlabel(xlab,fontsize=9.5,fontweight='bold')
-    plt.legend(loc="upper right",prop={'size':7})
-    ax.xaxis.set_label_coords(0.5,-0.175)
-    ax.yaxis.set_label_coords(-0.07,.5)
-    ax.set_title('CPU and Memory Activity',x=0.5,y=1)
-    plt.xlim([0,Ndur])
-    plt.hold(False)
-    self.ui.canvas.draw()
+    #update the Users bar chart
+    if self.ui.tabWidget.currentIndex() == 3:
+        #only update bar chart if the tab is active.
+        updateUserChart(self)
     
-    #update the number of users each time interval as well
-    userInfo=psutil.get_users() if psutilVer == 1 else psutil.users()
-    lst=[]
-    for item in userInfo:
-        lst.append(item.name)
-    uusers=set(lst)
-    Nuusers=len(uusers)
-    self.ui.labelNUsers.setText("Number of Users: "+str(Nuusers))
-    
-    #finally update the process table
-    updateProcTable(self)
     
     
 def updateProcTable(self):
@@ -455,8 +456,260 @@ def updateProcTable(self):
         #table.sortItems(column_sorted,order=QtCore.Qt.AscendingOrder)
         table.sortItems(column_sorted,order=order)
         self.ui.labelLastUpdate.setText("Last Update: "+str(datetime.datetime.now()))
+
+def updateUserChart(self):
+
+    font = {'family' : 'sans-serif',
+        'weight' : 'bold',
+        'size'   : 9}
+
+    matplotlib.rc('font', **font)
+
+    f=plt.figure(self.ui.figure2.number)
     
-   
+#    self.ui.figure2=plt.figure(2)
+
+    plt.clf()
+#    plt.cla()
+    f.gca().cla()
+
+    #create empty dictionaries to be used by the process table
+    d_user={}
+    d_cpu={}
+    d_mem={}
+    d_name={}
+    #fill the dictionaries - seems to need to be done faster than within loop which also fills the table...not sure why...
+    for proc in psutil.process_iter():
+        cpupct=proc.get_cpu_percent(interval=0) if psutilVer == 1 else proc.cpu_percent(interval=0)
+        memVal=float(int(float(proc.get_memory_percent())*100.0))/100.0 if psutilVer == 1 else float(int(float(proc.memory_percent())*100.0))/100.0
+        try:
+            #don't update dictionaries if name gives an access denied error when checking process name
+            pname=proc.name if psutilVer == 1 else proc.name()
+            d_user.update({proc.pid:proc.username}) if psutilVer == 1 else d_user.update({proc.pid:proc.username()})
+            d_cpu.update({proc.pid:cpupct})
+            d_mem.update({proc.pid:memVal})
+            d_name.update({proc.pid:pname})
+        except:
+            pass #place holder
+            
+    users=d_user.values()
+    users_unique=list(set(users)) #use set() to find unique users then convert the resulting set to a list via list()
+    Nusers=len(users_unique)
+
+    #create cpu and memory by users dictionaries
+    cpu_by_users={}
+    mem_by_users={}
+    for u in range(Nusers):
+        cpu_by_users.update({users_unique[u]:0})
+        mem_by_users.update({users_unique[u]:0})
+    #apparently update does not order keys in sequence to users_unique
+    #thus need to re-create users_unique according to the order of the users
+    #in the cpu and mem dictionary keys
+    users_unique=list(cpu_by_users.keys())
+
+    #fill cpu and memory dictionaries sequencing thru each PID
+    for pid in d_user.keys():
+        user=d_user[pid]
+        cpu_by_users[user]=cpu_by_users[user] + d_cpu[pid]
+        mem_by_users[user]=mem_by_users[user] + d_mem[pid]
+
+    #now convert to a list which we can index
+    cpu_by_users_lst=cpu_by_users.values()
+    mem_by_users_lst=mem_by_users.values()
+        
+    width=0.85
+    eps=0.001 
+
+
+    colors=['b','g','r','c','m','y','gray','hotpink','brown','k']
+    Nmax=len(colors) #don't want to have more users than colors...
+
+    if self.ui.radioButtonCPU.isChecked():
+        sortBy='cpu'
+    elif self.ui.radioButtonMem.isChecked():
+        sortBy='mem'
+    else:
+        print "invalid radio button selection - using CPU sort as default"
+        sortBy='cpu'
+    #sortBy='cpu' # 'cpu' or 'mem' - use for debugging
+    #create sort index
+    if sortBy=='cpu':
+        indx=sorted(range(len(cpu_by_users_lst)), key=cpu_by_users_lst.__getitem__,reverse=True)
+    elif sortBy=='mem':
+        indx=sorted(range(len(mem_by_users_lst)), key=mem_by_users_lst.__getitem__,reverse=True)
+    else:
+        print 'Incorrect sort parameter'
+    #sort lists
+    cpu_by_users_sorted=[cpu_by_users_lst[x] for x in indx]
+    mem_by_users_sorted=[mem_by_users_lst[x] for x in indx]
+    users_unique_sorted=[users_unique[x] for x in indx]
+
+    #restrict the number of users we'll show to Nmax
+    if Nusers > Nmax:
+        #replace the Nmaxth - 1 element with the total of the values from index Nmax - 1 to the end of the list
+        cpu_by_users_sorted[Nmax-1]=sum(cpu_by_users_sorted[Nmax-1:])
+        mem_remaining=sum(mem_by_users_sorted[Nmax-1:])
+        users_unique_sorted[Nmax-1]='Remaining'
+        Nshow=Nmax
+    else:
+        Nshow=Nusers
+
+    if min(cpu_by_users_sorted) < 0:
+        print " *** cp_by_users_sorted has values less than zero"
+        print cpu_by_users_sorted
+        print " ***"
+    if min(mem_by_users_sorted) < 0:
+        print " *** mem_by_users_sorted has values less than zero"
+        print mem_by_users_sorted
+        print " ***"        
+
+    #range check the values of the sorted lists 
+    tst=np.array(cpu_by_users_sorted)<0  #need an array for summing
+    indx=cpu_by_users_sorted<0           #need bool list for indexing
+    if sum(tst) > 0:
+        print "cpu_by_users < 0: ",sum(indx)
+        cpu_by_users_sorted[indx]=0
+    tst=np.array(cpu_by_users_sorted)>self.ui.Ncpus*100
+    indx=cpu_by_users_sorted>self.ui.Ncpus*100
+    if sum(tst) > 0:
+        print "cpu_by_users > Ncpus*100: ",sum(indx)
+        cpu_by_users_sorted[indx]=self.ui.Ncpus*100
+    tst=np.array(mem_by_users_sorted)<0
+    indx=mem_by_users_sorted<0
+    if sum(tst) > 0:
+        print "mem_by_users < 0: ",sum(indx)
+        mem_by_users_sorted[indx]=0
+    tst=np.array(mem_by_users_sorted)>self.ui.totalmem
+    indx=mem_by_users_sorted>self.ui.totalmem
+    if sum(tst) > 0:
+        print "mem_by_users > totalmem: ",sum(indx)
+        mem_by_users_sorted[indx]=self.ui.totalmem
+    
+    p=[] #list to contain plot objects for use by the legend   
+    ind=np.arange(2)
+    for u in range(Nshow):
+        if u == 0:
+            p.append(plt.bar(ind,(cpu_by_users_sorted[u],mem_by_users_sorted[u]),width,bottom=(0,0),color=colors[u]))
+        else:
+            p.append(plt.bar(ind,(cpu_by_users_sorted[u],mem_by_users_sorted[u]),width,bottom=(sum(cpu_by_users_sorted[0:u]),sum(mem_by_users_sorted[0:u])),color=colors[u]))
+    
+    
+    plt.title('CPU and Memory Usage by User',fontsize=10,fontweight='bold')
+    
+    #remove default yaxis ticks then redraw them via ax1 and ax2 below
+    frame=plt.gca()
+    frame.axes.get_yaxis().set_ticks([])
+    
+    plt.xticks(np.arange(2)+width/2.,('CPU','Mem'),fontsize=9,fontweight='bold')
+    ymaxCPU=round(int((sum(cpu_by_users_sorted[0:Nshow])+100)/100)*100)
+    ymaxMEM=round(int((sum(mem_by_users_sorted[0:Nshow])+100)/100)*100)
+    ymax=max([ymaxCPU,ymaxMEM,100])
+#    plt.ylim([0,ymax])
+    
+    #compute composite %
+    ylab=np.arange(6)/5.0*float(ymax)/float(self.ui.Ncpus)
+    ylab=ylab*10
+    tmp=ylab.astype('int')
+    tmp1=tmp.astype('float')
+    tmp1=tmp1/10
+    ylab1=tmp1
+    
+    ax1=plt.twinx()
+    ax1.set_ylabel('Composite CPU Percent',fontsize=9,fontweight='bold')
+    ax1.yaxis.set_ticks_position('left')
+    ax1.yaxis.set_label_position('left')
+    ax1.set_yticks(ylab1)
+    
+    usersLegend=users_unique_sorted[0:Nshow]
+    #reverse legend print order to have legend correspond with the order data are placed in the bar chart
+    usersLegend.reverse()
+    p.reverse()
+    plt.legend(p,usersLegend)
+    
+    #place second y axis label on plot
+    ylab2=np.arange(5)/4.0*float(ymax)
+    ax2=plt.twinx()
+    ax2.set_ylabel('Percent',fontsize=9,fontweight='bold')
+    ax2.set_yticks(ylab2)
+    #ax2.set_yticks(ylab2)
+    ax2.yaxis.set_ticks_position('right')
+    ax2.yaxis.set_label_position('right')
+    
+    self.ui.canvas2.draw()
+            
+def resetBarPlot(self):
+    #Object initialization calls this reset
+    #also called when the user opts to reset the bar plot in case it's no longer updating properly...seems there's a bug in matplotlib bar plots?
+    self.ui.tabWidget.setCurrentIndex(3)
+    matplotlib.rc_context({'toolbar':False})
+
+    self.ui.figure2 = plt.figure(2)
+
+    
+    # this is the Canvas Widget that displays the `figure`
+    # it takes the `figure` instance as a parameter to __init__
+    try:
+        canvas2Orig=self.ui.canvas2
+    except:
+        pass
+#    self.ui.canvas2 = FigureCanvas(self.ui.figure2)
+    
+    try:
+        #if passes, we already have a layout
+        chkLayout=self.ui.layout2.isEnabled()
+        #print "chkLayout: ",chkLayout
+        #remove layout before adding another one
+        #print "got here"
+        self.ui.figure2.clear()
+        self.ui.figure2.clf()
+        ax=self.ui.figure2.add_subplot(111)
+        ax.annotate('PLOT RESET',xy=(3,5),fontsize=14)
+
+        colors=['b','g','r','c','m','y','gray','hotpink','brown','k']
+        Nshow=len(colors) #don't want to have more users than colors...
+
+        ind=np.arange(2)
+        width=0.85
+        for u in range(Nshow):
+            r1=np.random.rand()
+            r2=np.random.rand()
+            if u == 0:
+                plt.bar(ind,(r1,r2),width,bottom=(0,0),color=colors[u])
+                r1sum=r1
+                r2sum=r2
+            else:
+                plt.bar(ind,(r1,r2),width,bottom=(r1sum,r2sum),color=colors[u])
+                r1sum=r1sum+r1
+                r2sum=r2sum+r2
+        plt.xticks(np.arange(2)+width/2.,('CPU','Mem'),fontsize=9,fontweight='bold')
+
+        
+        self.ui.canvas2.draw()
+#        self.ui.figure2.canvas.figure.gca().remove()
+        
+#        reLayout(self)
+        
+#        layout2=QtGui.QVBoxLayout(self.ui.frameBar)
+#        layout2.addWidget(self.ui.canvas2)
+#        self.ui.layout2=layout2           
+        
+#        self.ui.frameBar.removeWidget(self.ui.layout2)
+#        layout2=QtGui.QVBoxLayout(self.ui.frameBar)
+#        self.ui.frameBar.setLayout(layout2)
+#        layout2.setLayout(self.ui.canvas2)
+#        self.ui.layout2=layout2
+    except:
+        #will need to create a layout during initialization
+        self.ui.canvas2 = FigureCanvas(self.ui.figure2)
+        layout2=QtGui.QVBoxLayout(self.ui.frameBar)
+        layout2.addWidget(self.ui.canvas2)
+        self.ui.layout2=layout2   
+    #NOTE: QFrame needs a layout where the canvas is placed which contains the figure
+    
+def reLayout(self):
+    tmpWidget=QtGui.QWidget()
+    tmpWidget.setLayout(self.ui.layout2)
+    tmpLayout = QtGui.QVBoxLayout(self.ui.frameBar)
     
 if __name__=="__main__":
     app = QtGui.QApplication(sys.argv)
