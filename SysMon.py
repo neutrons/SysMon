@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'SysMon.ui'
 #
-# Created: Fri Sep 05 18:12:28 2014
+# Created: Tue Sep 09 16:13:55 2014
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -251,9 +251,6 @@ class Ui_MainWindow(object):
         self.radioButtonMem.setMinimumSize(QtCore.QSize(120, 21))
         self.radioButtonMem.setChecked(True)
         self.radioButtonMem.setObjectName(_fromUtf8("radioButtonMem"))
-        self.pushButtonResetBarPlot = QtGui.QPushButton(self.groupBox_2)
-        self.pushButtonResetBarPlot.setGeometry(QtCore.QRect(240, 0, 75, 23))
-        self.pushButtonResetBarPlot.setObjectName(_fromUtf8("pushButtonResetBarPlot"))
         self.verticalLayout.addWidget(self.groupBox_2)
         self.frameBar = QtGui.QFrame(self.tab_4)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.MinimumExpanding)
@@ -355,7 +352,6 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QtGui.QApplication.translate("MainWindow", "Processes", None, QtGui.QApplication.UnicodeUTF8))
         self.radioButtonCPU.setText(QtGui.QApplication.translate("MainWindow", "Sort by CPU", None, QtGui.QApplication.UnicodeUTF8))
         self.radioButtonMem.setText(QtGui.QApplication.translate("MainWindow", "Sort by Memory", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButtonResetBarPlot.setText(QtGui.QApplication.translate("MainWindow", "Reset Plot", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QtGui.QApplication.translate("MainWindow", "Users", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.menuOptions.setTitle(QtGui.QApplication.translate("MainWindow", "Options", None, QtGui.QApplication.UnicodeUTF8))
