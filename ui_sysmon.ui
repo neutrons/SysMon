@@ -1,716 +1,760 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>392</width>
+    <width>427</width>
     <height>323</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>336</width>
-    <height>282</height>
-   </size>
-  </property>
   <property name="windowTitle">
-   <string>System Monitor</string>
+   <string>Form</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QTabWidget" name="tabWidget">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>260</height>
-       </size>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="currentIndex">
-       <number>3</number>
-      </property>
-      <widget class="QWidget" name="tab">
-       <attribute name="title">
-        <string>System</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="0">
-         <widget class="QGroupBox" name="groupBox_3">
-          <property name="minimumSize">
-           <size>
-            <width>351</width>
-            <height>121</height>
-           </size>
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>300</width>
+       <height>260</height>
+      </size>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <property name="tabsClosable">
+      <bool>true</bool>
+     </property>
+     <property name="movable">
+      <bool>false</bool>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>System</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="minimumSize">
+          <size>
+           <width>351</width>
+           <height>121</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>System Info</string>
+         </property>
+         <widget class="QWidget" name="layoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>20</y>
+            <width>502</width>
+            <height>91</height>
+           </rect>
           </property>
-          <property name="title">
-           <string>System Info</string>
-          </property>
-          <widget class="QWidget" name="">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>20</y>
-             <width>342</width>
-             <height>91</height>
-            </rect>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <item>
-             <widget class="QLabel" name="labelComputerName">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>340</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Computer Name: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="labelOS">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>340</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Operating System:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="labelProcFam">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>340</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Processor Family:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="labelNUsers">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>340</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Number of Users Logged On:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="labelUptime">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>340</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>System Uptime: </string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QGroupBox" name="groupBox_5">
-          <property name="minimumSize">
-           <size>
-            <width>271</width>
-            <height>101</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <weight>50</weight>
-            <bold>false</bold>
-            <underline>false</underline>
-           </font>
-          </property>
-          <property name="title">
-           <string>Composite System Status</string>
-          </property>
-          <widget class="QProgressBar" name="progressBarStatusMemory">
-           <property name="geometry">
-            <rect>
-             <x>130</x>
-             <y>20</y>
-             <width>201</width>
-             <height>23</height>
-            </rect>
-           </property>
-           <property name="value">
-            <number>24</number>
-           </property>
-          </widget>
-          <widget class="QProgressBar" name="progressBarStatusCPU">
-           <property name="geometry">
-            <rect>
-             <x>130</x>
-             <y>60</y>
-             <width>201</width>
-             <height>23</height>
-            </rect>
-           </property>
-           <property name="value">
-            <number>24</number>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_101">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>20</y>
-             <width>101</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <underline>false</underline>
-            </font>
-           </property>
-           <property name="text">
-            <string>Memory Usage</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_102">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>60</y>
-             <width>111</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <underline>false</underline>
-            </font>
-           </property>
-           <property name="text">
-            <string>CPU Usage</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="labelMaxMem">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>40</y>
-             <width>91</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Max Mem:</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="labelCPUCount">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>80</y>
-             <width>91</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>CPU count:</string>
-           </property>
-          </widget>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tab_2">
-       <attribute name="title">
-        <string>History</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <widget class="QFrame" name="framePlot">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tab_3">
-       <attribute name="title">
-        <string>Processes</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <widget class="QFrame" name="frame">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_4">
-           <item row="0" column="0">
-            <widget class="QGroupBox" name="groupBox">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QLabel" name="labelComputerName">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize">
               <size>
-               <width>0</width>
-               <height>35</height>
+               <width>500</width>
+               <height>0</height>
               </size>
              </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>35</height>
-              </size>
+             <property name="text">
+              <string>Computer Name: </string>
              </property>
-             <property name="title">
-              <string/>
-             </property>
-             <widget class="QPushButton" name="pushButtonUpdate">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>10</y>
-                <width>80</width>
-                <height>15</height>
-               </rect>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>80</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>80</width>
-                <height>15</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>7</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Hold Updates</string>
-              </property>
-             </widget>
-             <widget class="QLabel" name="labelLastUpdate">
-              <property name="geometry">
-               <rect>
-                <x>100</x>
-                <y>10</y>
-                <width>200</width>
-                <height>20</height>
-               </rect>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>200</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>210</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Last Update: </string>
-              </property>
-             </widget>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QTableWidget" name="tableWidgetProcess">
+           <item>
+            <widget class="QLabel" name="labelOS">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>100</horstretch>
-               <verstretch>100</verstretch>
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize">
               <size>
-               <width>311</width>
-               <height>201</height>
+               <width>500</width>
+               <height>0</height>
               </size>
              </property>
-             <property name="editTriggers">
-              <set>QAbstractItemView::NoEditTriggers</set>
+             <property name="text">
+              <string>Operating System:</string>
              </property>
-             <property name="sortingEnabled">
-              <bool>true</bool>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelProcFam">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
-             <property name="rowCount">
-              <number>10</number>
+             <property name="minimumSize">
+              <size>
+               <width>500</width>
+               <height>0</height>
+              </size>
              </property>
-             <property name="columnCount">
-              <number>5</number>
+             <property name="text">
+              <string>Processor Family:</string>
              </property>
-             <attribute name="horizontalHeaderDefaultSectionSize">
-              <number>57</number>
-             </attribute>
-             <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-              <bool>true</bool>
-             </attribute>
-             <attribute name="horizontalHeaderStretchLastSection">
-              <bool>true</bool>
-             </attribute>
-             <attribute name="verticalHeaderVisible">
-              <bool>false</bool>
-             </attribute>
-             <attribute name="verticalHeaderDefaultSectionSize">
-              <number>20</number>
-             </attribute>
-             <attribute name="verticalHeaderStretchLastSection">
-              <bool>true</bool>
-             </attribute>
-             <row/>
-             <row/>
-             <row/>
-             <row/>
-             <row/>
-             <row/>
-             <row/>
-             <row/>
-             <row/>
-             <row/>
-             <column>
-              <property name="text">
-               <string>PID</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>USER</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>CPU%</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>MEM%</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>NAME</string>
-              </property>
-             </column>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelNUsers">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>340</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Number of Users Logged On:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelUptime">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>340</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>System Uptime: </string>
+             </property>
             </widget>
            </item>
           </layout>
          </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tab_4">
-       <attribute name="title">
-        <string>Users</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QGroupBox" name="groupBox_2">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox_5">
+         <property name="minimumSize">
+          <size>
+           <width>271</width>
+           <height>101</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <weight>50</weight>
+           <bold>false</bold>
+           <underline>false</underline>
+          </font>
+         </property>
+         <property name="title">
+          <string>Composite System Status</string>
+         </property>
+         <widget class="QProgressBar" name="progressBarStatusMemory">
+          <property name="geometry">
+           <rect>
+            <x>200</x>
+            <y>20</y>
+            <width>171</width>
+            <height>23</height>
+           </rect>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>331</width>
-            <height>31</height>
-           </size>
+          <property name="value">
+           <number>24</number>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="title">
-           <string/>
-          </property>
-          <widget class="QRadioButton" name="radioButtonCPU">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>0</y>
-             <width>100</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>21</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Sort by CPU</string>
-           </property>
-          </widget>
-          <widget class="QRadioButton" name="radioButtonMem">
-           <property name="geometry">
-            <rect>
-             <x>116</x>
-             <y>0</y>
-             <width>120</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>120</width>
-             <height>21</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Sort by Memory</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
          </widget>
-        </item>
-        <item>
-         <widget class="QFrame" name="frameBar">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+         <widget class="QProgressBar" name="progressBarStatusCPU">
+          <property name="geometry">
+           <rect>
+            <x>200</x>
+            <y>60</y>
+            <width>171</width>
+            <height>23</height>
+           </rect>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>331</width>
-            <height>201</height>
-           </size>
+          <property name="value">
+           <number>24</number>
           </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <zorder>groupBox_2</zorder>
          </widget>
-        </item>
-       </layout>
-      </widget>
+         <widget class="QLabel" name="labelMemUsage">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>20</y>
+            <width>171</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <underline>false</underline>
+           </font>
+          </property>
+          <property name="text">
+           <string>Memory Usage</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_102">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>60</y>
+            <width>141</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <underline>false</underline>
+           </font>
+          </property>
+          <property name="text">
+           <string>Composite CPU Usage</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="labelMaxMem">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>40</y>
+            <width>171</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Max Mem:</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="labelCPUCount">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>80</y>
+            <width>141</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>CPU count:</string>
+          </property>
+         </widget>
+        </widget>
+       </item>
+      </layout>
      </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>392</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionExit"/>
-   </widget>
-   <widget class="QMenu" name="menuOptions">
-    <property name="title">
-     <string>Options</string>
-    </property>
-    <widget class="QMenu" name="menuUpdate_Rate">
-     <property name="title">
-      <string>Display Period</string>
-     </property>
-     <addaction name="action60Seconds"/>
-     <addaction name="action300Seconds"/>
-     <addaction name="action600Seconds"/>
-     <addaction name="action3600Seconds"/>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>History</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QFrame" name="framePlot">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Processes</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QFrame" name="frame">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QGroupBox" name="groupBox">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="title">
+             <string/>
+            </property>
+            <widget class="QPushButton" name="pushButtonUpdate">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>10</y>
+               <width>80</width>
+               <height>15</height>
+              </rect>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>80</width>
+               <height>15</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>7</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Hold Updates</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="labelLastUpdate">
+             <property name="geometry">
+              <rect>
+               <x>100</x>
+               <y>10</y>
+               <width>251</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>200</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Last Update: </string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="tableWidgetProcess">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>100</horstretch>
+              <verstretch>100</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>311</width>
+              <height>201</height>
+             </size>
+            </property>
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+            <property name="rowCount">
+             <number>10</number>
+            </property>
+            <property name="columnCount">
+             <number>5</number>
+            </property>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>57</number>
+            </attribute>
+            <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderDefaultSectionSize">
+             <number>20</number>
+            </attribute>
+            <attribute name="verticalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <column>
+             <property name="text">
+              <string>PID</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>USER</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>CPU%</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>MEM%</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>NAME</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_4">
+      <attribute name="title">
+       <string>Users</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>331</width>
+           <height>31</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>31</height>
+          </size>
+         </property>
+         <property name="title">
+          <string/>
+         </property>
+         <widget class="QRadioButton" name="radioButtonCPU">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>0</y>
+            <width>100</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Sort by CPU</string>
+          </property>
+         </widget>
+         <widget class="QRadioButton" name="radioButtonMem">
+          <property name="geometry">
+           <rect>
+            <x>116</x>
+            <y>0</y>
+            <width>120</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Sort by Memory</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="frameBar">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>331</width>
+           <height>201</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_5">
+      <attribute name="title">
+       <string>Options</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="minimumSize">
+          <size>
+           <width>160</width>
+           <height>180</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Update Rate</string>
+         </property>
+         <widget class="QRadioButton" name="radioButton1Sec">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>30</y>
+            <width>141</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>1 Second</string>
+          </property>
+         </widget>
+         <widget class="QRadioButton" name="radioButton2Secs">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>60</y>
+            <width>141</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>2 Seconds</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QRadioButton" name="radioButton5Secs">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>90</y>
+            <width>141</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>5 Seconds</string>
+          </property>
+         </widget>
+         <widget class="QRadioButton" name="radioButton10Secs">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>120</y>
+            <width>141</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>10 Seconds</string>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_6">
+         <property name="minimumSize">
+          <size>
+           <width>160</width>
+           <height>180</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Display Period</string>
+         </property>
+         <widget class="QRadioButton" name="radioButton60Secs">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>30</y>
+            <width>161</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>60 Seconds</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QRadioButton" name="radioButton300Secs">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>60</y>
+            <width>161</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>300 Seconds</string>
+          </property>
+         </widget>
+         <widget class="QRadioButton" name="radioButton600Secs">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>90</y>
+            <width>161</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>600 Seconds</string>
+          </property>
+         </widget>
+         <widget class="QRadioButton" name="radioButton3600Secs">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>120</y>
+            <width>161</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>3600 Seconds</string>
+          </property>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
-    <widget class="QMenu" name="menuUpdate_Rate_2">
-     <property name="title">
-      <string>Update Rate</string>
-     </property>
-     <addaction name="action1_Second"/>
-     <addaction name="action2_Seconds"/>
-     <addaction name="action5_Seconds"/>
-     <addaction name="action10_Seconds"/>
-    </widget>
-    <addaction name="menuUpdate_Rate_2"/>
-    <addaction name="menuUpdate_Rate"/>
-    <addaction name="actionCheck_Matlab_Licenses"/>
-   </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-    <addaction name="actionAbout"/>
-   </widget>
-   <addaction name="menuFile"/>
-   <addaction name="menuOptions"/>
-   <addaction name="menuHelp"/>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionExit">
-   <property name="text">
-    <string>Exit</string>
-   </property>
-  </action>
-  <action name="action60Seconds">
-   <property name="text">
-    <string>60 Seconds</string>
-   </property>
-  </action>
-  <action name="action300Seconds">
-   <property name="text">
-    <string>300 Seconds</string>
-   </property>
-  </action>
-  <action name="action600Seconds">
-   <property name="text">
-    <string>600 Seconds</string>
-   </property>
-  </action>
-  <action name="action3600Seconds">
-   <property name="text">
-    <string>3600 Seconds</string>
-   </property>
-  </action>
-  <action name="actionAbout">
-   <property name="text">
-    <string>About</string>
-   </property>
-  </action>
-  <action name="actionCheck_Matlab_Licenses">
-   <property name="text">
-    <string>Check Matlab Licenses</string>
-   </property>
-  </action>
-  <action name="action1_Second">
-   <property name="text">
-    <string>1 Second</string>
-   </property>
-  </action>
-  <action name="action2_Seconds">
-   <property name="text">
-    <string>2 Seconds</string>
-   </property>
-  </action>
-  <action name="action5_Seconds">
-   <property name="text">
-    <string>5 Seconds</string>
-   </property>
-  </action>
-  <action name="action10_Seconds">
-   <property name="text">
-    <string>10 Seconds</string>
-   </property>
-  </action>
+   </item>
+  </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>radioButton1Sec</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>radioButton1Sec</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>110</x>
+     <y>81</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>110</x>
+     <y>81</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
