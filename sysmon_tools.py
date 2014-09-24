@@ -3,6 +3,7 @@ from PyQt4 import Qt, QtCore, QtGui
 import datetime
 import numpy as np
 import config
+import math
 
 #check if command line flag --nompl set to disable matplotlib 
 if not(config.nompl):
@@ -40,15 +41,14 @@ def constantUpdateActor(self,config):
     self.ui.Ncpus=Ncpus
     totalcpustr='CPU Count: '+str(Ncpus)
 #        print "Total CPU str: ",totalcpustr
-    self.ui.labelCPUCount.setText(totalcpustr)
+    self.ui.labelCPUCount.setText(totalcpustr+'  - CPU Utilization:')
     totalmem=int(round(float(psutil.virtual_memory().total)/(1024*1024*1024))) #psutil syntax OK for both versions
 #        print "Total Mem: ",totalmem
-    self.ui.labelMemUsage.setText('Memory Usage: '+str(totalmem*percentmembusy/100)+' GB')
     self.ui.totalmem=totalmem
     totalmemstr='Max Mem: '+str(totalmem)+' GB'
+    self.ui.labelMemUsage.setText('Memory Usage: '+str(totalmem*percentmembusy/100)+' GB of '+totalmemstr)
 #        print "Total Mem str: ",totalmemstr
-    self.ui.labelMaxMem.setText(totalmemstr)
-#    print "** config.mplLoaded: ",config.mplLoaded
+
     
     if config.mplLoaded:
         #update first position with most recent value overwriting oldest value which has been shifted to first position
@@ -108,6 +108,7 @@ def constantUpdateActor(self,config):
             xlab="Seconds with 10 Second Updates"
         plt.xlabel(xlab,fontsize=9.5,fontweight='bold')
         plt.legend(loc="upper right",prop={'size':9})
+        
         plt.xlim([0,Ndur])
         self.ui.canvas.draw()
     
@@ -220,7 +221,7 @@ def updateUserChart(self,config):
     plt.clf()
     plt.cla()
 #    f.gca().cla()
-
+    plt.subplot(121) #divide plot area into two: plot on left and legend on right
     #create empty dictionaries to be used by the process table
     d_user={}
     d_cpu={}
@@ -274,6 +275,8 @@ def updateUserChart(self,config):
         sortBy='cpu'
     elif self.ui.radioButtonMem.isChecked():
         sortBy='mem'
+    elif self.ui.radioButtonMax.isChecked():
+        sortBy='max'
     else:
         print "invalid radio button selection - using CPU sort as default"
         sortBy='cpu'
@@ -283,6 +286,14 @@ def updateUserChart(self,config):
         indx=sorted(range(len(cpu_by_users_lst)), key=cpu_by_users_lst.__getitem__,reverse=True)
     elif sortBy=='mem':
         indx=sorted(range(len(mem_by_users_lst)), key=mem_by_users_lst.__getitem__,reverse=True)
+    elif sortBy=='max':
+        #determine if cpu or mem is larger
+        if sum(cpu_by_users_lst) > sum(mem_by_users_lst):
+            #case where cpu usage is larger value
+            indx=sorted(range(len(cpu_by_users_lst)), key=cpu_by_users_lst.__getitem__,reverse=True)
+        else:
+            #case where mem usage is larger
+            indx=sorted(range(len(mem_by_users_lst)), key=mem_by_users_lst.__getitem__,reverse=True)
     else:
         print 'Incorrect sort parameter'
     #sort lists
@@ -342,42 +353,67 @@ def updateUserChart(self,config):
         else:
             p.append(plt.bar(ind,(cpu_by_users_sorted[u],mem_by_users_sorted[u]),width,bottom=(sum(cpu_by_users_sorted[0:u]),sum(mem_by_users_sorted[0:u])),color=colors[u]))
     
-    plt.title('CPU and Memory Usage by User',fontsize=10,fontweight='bold')
+    plt.title('Usage by User',fontsize=10,fontweight='bold')
     
     #remove default yaxis ticks then redraw them via ax1 and ax2 below
     frame=plt.gca()
     frame.axes.get_yaxis().set_ticks([])
     plt.xticks(np.arange(2)+width/2.,('CPU','Mem'),fontsize=9,fontweight='bold')
-    ymaxCPU=round(int((sum(cpu_by_users_sorted[0:Nshow])+100)/100)*100)
-    ymaxMEM=round(int((sum(mem_by_users_sorted[0:Nshow])+100)/100)*100)
-    ymax=max([ymaxCPU,ymaxMEM,100])
-#    plt.ylim([0,ymax])
+    ymaxCPU=int((sum(cpu_by_users_sorted)+100)/100)*100    #range ymaxCPU to nearest 100%
+    ymaxMEM=int(round(sum(mem_by_users_sorted)+10))/10*10  #range ymaxMEM to nearest 10%
+    
+    ymaxMAX=max([ymaxCPU,ymaxMEM,100])
+
+    if sortBy == 'cpu':
+        ymax=max([ymaxCPU,10])
+        auto=False
+    elif sortBy == 'mem':
+        ymax=max([ymaxMEM,10])
+        auto=False
+    elif sortBy == 'max':
+        ymax=max([ymaxMAX,10])
+        auto=True
+#    print 'ymaxCPU: ',ymaxCPU,'  ymaxMEM: ',ymaxMEM,'  ymaxMAX: ',ymaxMAX,'  ymax: ',ymax,' sum(mem_by_users_sorted): ',sum(mem_by_users_sorted)
+    plt.ylim(0,ymax,auto=auto)
+    
+
     
     #compute composite %
-    ylab=np.arange(6)/5.0*float(ymax)/float(self.ui.Ncpus)
-    ylab=ylab*10
+    sumCPU=sum(cpu_by_users_sorted)
+    ylab=np.arange(5)/4.0*float(sumCPU)/float(self.ui.Ncpus)
+    scl=float(ymax)/float(sumCPU)
+    ylab=ylab*100*scl
     tmp=ylab.astype('int')
     tmp1=tmp.astype('float')
-    tmp1=tmp1/10
+    tmp1=tmp1/100
     ylab1=tmp1
     
     ax1=plt.twinx()
     ax1.set_ylabel('Composite CPU Percent',fontsize=9,fontweight='bold')
     ax1.yaxis.set_ticks_position('left')
     ax1.yaxis.set_label_position('left')
+    ax1.set_ybound(lower=0,upper=max(ylab1))
     ax1.set_yticks(ylab1)
     
+#    print 'ylab1: ',ylab1
+    
+    #place warnings if MEM or CPU go out of range
+    if ymax < ymaxCPU:
+        plt.text(2.7,-0.05,'CPU Above Axis',color='red')
+    if ymax < ymaxMEM:
+        plt.text(2.7,0.05,'MEM Above Axis',color='green')    
+        
     usersLegend=users_unique_sorted[0:Nshow]
     #reverse legend print order to have legend correspond with the order data are placed in the bar chart
     usersLegend.reverse()
     p.reverse()
-    plt.legend(p,usersLegend)
-
-    
+    #place legend outside of plot to the right
+    plt.legend(p,usersLegend,bbox_to_anchor=(1.45, 1.1), loc="upper left", borderaxespad=0.1,fontsize=8.5,title='Users')
+        
     #place second y axis label on plot
     ylab2=np.arange(5)/4.0*float(ymax)
     ax2=plt.twinx()
-    ax2.set_ylabel('Percent',fontsize=9,fontweight='bold')
+    ax2.set_ylabel('Percent',fontsize=9,fontweight='bold',position=(0.9,0.5))
     ax2.set_yticks(ylab2)
     #ax2.set_yticks(ylab2)
     ax2.yaxis.set_ticks_position('right')
