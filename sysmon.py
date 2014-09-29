@@ -131,6 +131,8 @@ class SysMon(QtGui.QWidget):
         self.ui.cpu=np.zeros(Nsamples+1)
         self.ui.mem=np.zeros(Nsamples+1)
         self.ui.dt=[None]*(Nsamples+1)
+        self.ui.cpuMe=np.zeros(Nsamples+1)
+        self.ui.memMe=np.zeros(Nsamples+1)
 
         self.ui.tabWidget.setTabsClosable(False)  #disable the ability to close tabs once state of matplotlib is handled
 
@@ -152,6 +154,8 @@ class SysMon(QtGui.QWidget):
         #clear persistent arrays when update rate changed
         self.ui.cpu=self.ui.cpu*0
         self.ui.mem=self.ui.mem*0
+        self.ui.cpuMe=self.ui.cpuMe*0
+        self.ui.memMe=self.ui.memMe*0
         self.ui.dt=[None]*self.ui.Nsamples
 
     def update2Sec(self):
@@ -161,6 +165,8 @@ class SysMon(QtGui.QWidget):
         #clear persistent arrays when update rate changed
         self.ui.cpu=self.ui.cpu*0
         self.ui.mem=self.ui.mem*0
+        self.ui.cpuMe=self.ui.cpuMe*0
+        self.ui.memMe=self.ui.memMe*0
         self.ui.dt=[None]*self.ui.Nsamples
 
     def update5Sec(self):
@@ -170,6 +176,8 @@ class SysMon(QtGui.QWidget):
         #clear persistent arrays when update rate changed
         self.ui.cpu=self.ui.cpu*0
         self.ui.mem=self.ui.mem*0
+        self.ui.cpuMe=self.ui.cpuMe*0
+        self.ui.memMe=self.ui.memMe*0
         self.ui.dt=[None]*self.ui.Nsamples
 
     def update10Sec(self):
@@ -179,6 +187,8 @@ class SysMon(QtGui.QWidget):
         #clear persistent arrays when update rate changed
         self.ui.cpu=self.ui.cpu*0
         self.ui.mem=self.ui.mem*0
+        self.ui.cpuMe=self.ui.cpuMe*0
+        self.ui.memMe=self.ui.memMe*0
         self.ui.dt=[None]*self.ui.Nsamples
 
     def update60Duration(self):
@@ -208,11 +218,22 @@ class SysMon(QtGui.QWidget):
         if w < wmin:
             w=wmin
         #now use widget width to determine process table column width
-        self.ui.tableWidgetProcess.setColumnWidth(0,3*w/20) #PID
-        self.ui.tableWidgetProcess.setColumnWidth(1,5*w/20) #User
-        self.ui.tableWidgetProcess.setColumnWidth(2,3*w/20) #CPU%
-        self.ui.tableWidgetProcess.setColumnWidth(3,3*w/20) #MEM%
-        self.ui.tableWidgetProcess.setColumnWidth(4,6*w/20) #Name
+        self.ui.tableWidgetProcess.setColumnWidth(0,3.5*w/20) #PID
+        self.ui.tableWidgetProcess.setColumnWidth(1,4*w/20) #User
+        self.ui.tableWidgetProcess.setColumnWidth(2,3.5*w/20) #CPU%
+        self.ui.tableWidgetProcess.setColumnWidth(3,3.5*w/20) #MEM%
+        self.ui.tableWidgetProcess.setColumnWidth(4,5.5*w/20) #Name
+        
+        #check size of GUI to determine the size of font to use.
+        minSz=self.ui.parent.minimumSize().width() #establish minimum table size based upon parent widget minimum size
+        curSz=self.ui.parent.size().width()
+        #print "current size: ",curSz," type: ",type(curSz),"  min size: ",minSz,"  type: ",type(minSz)
+        fsize=max([int(config.basefontsize*float(curSz)/float(minSz)*config.fscl),config.basefontsize])
+        #print "Font Size: ",fsize
+        config.pltFont=fsize
+        
+        #adapt plot line width to GUI size change
+        config.linewidth=min([max([int(float(curSz)/float(minSz)),1]),3])
 
     def removeMPLTabs(self):
         #In case matplotlib not available, remove tabs requiring this
