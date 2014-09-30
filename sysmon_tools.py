@@ -35,7 +35,7 @@ def constantUpdateActor(self,config):
     #mode to show status in percentage
     if self.update < 3:
         #use averaging if using faster update rates
-        Navg=2
+        Navg=1
     else:
         #Don't need averaging in longer acquisition cases
         Navg=1
@@ -62,7 +62,7 @@ def constantUpdateActor(self,config):
     totalmem=int(round(float(psutil.virtual_memory().total)/(1024*1024*1024))) #psutil syntax OK for both versions
 #        print "Total Mem: ",totalmem
     self.ui.totalmem=totalmem
-    totalmemstr='Max Mem: '+str(totalmem)+' GB'
+    totalmemstr=str(totalmem)+' GB'
     self.ui.labelMemUsage.setText('Memory Usage: '+str(totalmem*percentmembusy/100)+' GB of '+totalmemstr)
 #        print "Total Mem str: ",totalmemstr
     
@@ -93,18 +93,22 @@ def constantUpdateActor(self,config):
     cpupctTot=0
     memValTot=0
     for proc in psutil.process_iter():
-        cpupct=proc.get_cpu_percent(interval=0) if config.psutilVer == 1 else proc.cpu_percent(interval=0)
-        memVal=proc.get_memory_percent() if config.psutilVer == 1 else proc.memory_percent()
-
         try:
-            #some processes give permission denied when getting the name, if so, fail out gracefully using this try.
-            if config.psutilVer == 1:
-                uname=proc.username
-            else:
-                uname=proc.username()
-            #print "proc.username: ",uname," type: ",type(uname),"  Me: ",Me," type: ",type(Me)
+            #check if process still exists, if so, update dictionaries
+            cpupct=proc.get_cpu_percent(interval=0) if config.psutilVer == 1 else proc.cpu_percent(interval=0)
+            memVal=proc.get_memory_percent() if config.psutilVer == 1 else proc.memory_percent()
+
+            try:
+                #some processes give permission denied when getting the name, if so, fail out gracefully using this try.
+                if config.psutilVer == 1:
+                    uname=proc.username
+                else:
+                    uname=proc.username()
+                #print "proc.username: ",uname," type: ",type(uname),"  Me: ",Me," type: ",type(Me)
+            except:
+                uname=''
         except:
-            uname=''
+            pass #skip process - case where process no longer exists
         cpupctTot+=cpupct
         memValTot+=memVal
         #print "uname: ",uname,"  Me: ",Me
@@ -208,17 +212,21 @@ def updateProcTable(self,config):
 
         #fill the dictionaries - seems to need to be done faster than within loop which also fills the table...not sure why...
         for proc in psutil.process_iter():
-            cpupct=proc.get_cpu_percent(interval=0) if config.psutilVer == 1 else proc.cpu_percent(interval=0)
-            memVal=float(int(float(proc.get_memory_percent())*100.0))/100.0 if config.psutilVer == 1 else float(int(float(proc.memory_percent())*100.0))/100.0
             try:
-                #don't update dictionaries if name gives an access denied error when checking process name
-                pname=proc.name if config.psutilVer == 1 else proc.name()
-                d_user.update({proc.pid:proc.username}) if config.psutilVer == 1 else d_user.update({proc.pid:proc.username()})
-                d_cpu.update({proc.pid:cpupct})
-                d_mem.update({proc.pid:memVal})
-                d_name.update({proc.pid:pname})
+                #check if process still exists, if so, update dictionaries
+                cpupct=proc.get_cpu_percent(interval=0) if config.psutilVer == 1 else proc.cpu_percent(interval=0)
+                memVal=float(int(float(proc.get_memory_percent())*100.0))/100.0 if config.psutilVer == 1 else float(int(float(proc.memory_percent())*100.0))/100.0
+                try:
+                    #don't update dictionaries if name gives an access denied error when checking process name
+                    pname=proc.name if config.psutilVer == 1 else proc.name()
+                    d_user.update({proc.pid:proc.username}) if config.psutilVer == 1 else d_user.update({proc.pid:proc.username()})
+                    d_cpu.update({proc.pid:cpupct})
+                    d_mem.update({proc.pid:memVal})
+                    d_name.update({proc.pid:pname})
+                except:
+                    pass #place holder
             except:
-                pass #place holder
+                pass #skip this process - case where it no longer exists
 
         #now fill the table for display
         for proc in d_user.keys():
@@ -277,18 +285,24 @@ def updateUserChart(self,config):
     d_name={}
     #fill the dictionaries - seems to need to be done faster than within loop which also fills the table...not sure why...
     for proc in psutil.process_iter():
-        cpupct=proc.get_cpu_percent(interval=0) if config.psutilVer == 1 else proc.cpu_percent(interval=0)
-        memVal=float(int(float(proc.get_memory_percent())*100.0))/100.0 if config.psutilVer == 1 else float(int(float(proc.memory_percent())*100.0))/100.0
         try:
-            #don't update dictionaries if name gives an access denied error when checking process name
-            pname=proc.name if config.psutilVer == 1 else proc.name()
-            d_user.update({proc.pid:proc.username}) if config.psutilVer == 1 else d_user.update({proc.pid:proc.username()})
-            d_cpu.update({proc.pid:cpupct})
-            d_mem.update({proc.pid:memVal})
-            d_name.update({proc.pid:pname})
+            #check if process still exists, if so, update dictionaries
+            cpupct=proc.get_cpu_percent(interval=0) if config.psutilVer == 1 else proc.cpu_percent(interval=0)
+            memVal=float(int(float(proc.get_memory_percent())*100.0))/100.0 if config.psutilVer == 1 else float(int(float(proc.memory_percent())*100.0))/100.0
+            try:
+                #don't update dictionaries if name gives an access denied error when checking process name
+                pname=proc.name if config.psutilVer == 1 else proc.name()
+                d_user.update({proc.pid:proc.username}) if config.psutilVer == 1 else d_user.update({proc.pid:proc.username()})
+                d_cpu.update({proc.pid:cpupct})
+                d_mem.update({proc.pid:memVal})
+                d_name.update({proc.pid:pname})
+            except:
+                #print "access denied"
+                pass #place holder
         except:
-            pass #place holder
-            
+            #print "skipped process"
+            pass #skip this process as it no longer exists
+    #print "** Total Mem Used: ",sum(d_mem.values())
     users=d_user.values()
     users_unique=list(set(users)) #use set() to find unique users then convert the resulting set to a list via list()
     Nusers=len(users_unique)
