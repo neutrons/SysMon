@@ -26,6 +26,15 @@ try:
 except AttributeError:
     _fromUtf8 = lambda s: s
 
+#import application version information
+__version__="unknown"
+try:
+    from _version import __version__
+except ImportError:
+    #_version.py file not found - version not known in this case so use
+    #the default previously given.
+    pass
+
 class SysMon(QtGui.QWidget):
 
     def __init__(self, parent=None):
@@ -142,6 +151,9 @@ class SysMon(QtGui.QWidget):
         
         #upon initialization completion, set System tab (first tab on left) as the visible tab
         self.ui.tabWidget.setCurrentIndex(config.SYST_TAB)
+        
+        #initialize version label
+        self.ui.labelVersion.setText("Version: "+__version__)
 
     def constantUpdate(self):
         #redirct to global function
@@ -211,7 +223,6 @@ class SysMon(QtGui.QWidget):
             self.ui.pushButtonUpdate.setText('Hold Updates')
 
     def resizeEvent(self,resizeEvent):
-        print "resizing"
         sz=self.ui.tableWidgetProcess.size()
         w=sz.width()
         wmin=self.ui.parent.minimumSize().width() #establish minimum table size based upon parent widget minimum size
