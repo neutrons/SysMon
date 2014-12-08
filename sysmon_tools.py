@@ -5,6 +5,7 @@ import numpy as np
 import config
 import math
 import getpass
+import re
 
 #check if command line flag --nompl set to disable matplotlib 
 if not(config.nompl):
@@ -91,7 +92,10 @@ def constantUpdateActor(self,config):
             except:
                 uname=''
         except:
-            pass #skip process - case where process no longer exists
+            #skip process - case where process no longer exists
+            cpupct=0
+            memVal=0
+            uname=''
         cpupctTot+=cpupct
         memValTot+=memVal
         #print "uname: ",uname,"  Me: ",Me
@@ -476,7 +480,11 @@ def updateUserChart(self,config):
     usersLegend.reverse()
     p.reverse()
     #place legend outside of plot to the right
-    plt.legend(p,usersLegend,bbox_to_anchor=(1.45, 1.1), loc="upper left", borderaxespad=0.1,fontsize=config.pltFont-0.5,title='Users')
+    if not re.match('1.[0-1]',matplotlib.__version__):
+        #if not an old version of matplotlib, then use the following command 
+        plt.legend(p,usersLegend,bbox_to_anchor=(1.45, 1.1), loc="upper left", borderaxespad=0.1,fontsize=config.pltFont-0.5,title='Users')
+    else:
+        plt.legend(p,usersLegend,bbox_to_anchor=(1.45, 1.1), loc="upper left", borderaxespad=0.1,title='Users')
         
     #place second y axis label on plot
     ylab2=np.arange(5)/4.0*float(ymax)

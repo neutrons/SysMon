@@ -111,7 +111,9 @@ class SysMon(QtGui.QWidget):
             #create drawing canvas
             # a figure instance to plot on
 
-            matplotlib.rc_context({'toolbar':False})
+            if not re.match('1.[0-1]',matplotlib.__version__):
+                #if not an old version of matplotlib, then use the following command 
+                matplotlib.rc_context({'toolbar':False})
             #initialize figure 1 and its canvas for cpu and memory history plots
             self.ui.figure = plt.figure(1)
             # the Canvas Widget displays the `figure`
