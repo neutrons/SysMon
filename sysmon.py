@@ -3,7 +3,14 @@
 import sys, os, time
 import re
 import config  #application constants and variables
+#suppress deprecation warnings that can occur when importing psutil version 2
+#note - all deprecation warnings will probably be suppressed using this filterwarnings
+#as specifying the psutil module specifically in filterwarnings did not suppress 
+#these warnings
+import warnings
+warnings.filterwarnings('ignore',category=DeprecationWarning)
 import psutil
+
 #check psutil version as command syntax changes between version 1 and version 2
 ver=psutil.__version__
 verChk1=re.match('1.[0-9].[0-9]',ver) #latest psutil version 1 is 1.2.1 - using positional numeric wildcards to check sub versions

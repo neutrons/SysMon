@@ -1,4 +1,11 @@
+#suppress deprecation warnings that can occur when importing psutil version 2
+#note - all deprecation warnings will probably be suppressed using this filterwarnings
+#as specifying the psutil module specifically in filterwarnings did not suppress 
+#these warnings
+import warnings
+warnings.filterwarnings('ignore',category=DeprecationWarning)
 import psutil
+
 from PyQt4 import Qt, QtCore, QtGui
 import datetime
 import numpy as np
